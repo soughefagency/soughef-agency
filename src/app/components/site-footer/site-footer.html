@@ -1,0 +1,19 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <a class="brand" href="#accueil" aria-label="SOUGHEF ORGANIZATION, retour en haut">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span class="brand-name">SOUGHEF<span class="brand-sub">ORGANIZATION</span></span>
+      </a>
+      <nav class="footer-links" aria-label="Navigation de pied de page">
+        @for (link of links; track link.href) {
+          <a [href]="link.href">{{ link.label }}</a>
+        }
+      </nav>
+    </div>
+    <div class="copyright">
+      <span>© {{ year() }} SOUGHEF ORGANIZATION. Tous droits réservés.</span>
+      <span>Votre vision, notre expertise.</span>
+    </div>
+  </div>
+</footer>

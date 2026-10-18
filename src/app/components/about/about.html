@@ -1,0 +1,37 @@
+<section class="about" id="apropos">
+  <div class="container about-grid">
+    <div class="about-visual" role="img" aria-label="Espace de travail créatif et numérique">
+      <div class="about-photo"></div>
+      <div class="about-stamp">
+        <strong>SOUGHEF</strong>
+        <span>Innovation · Créativité · Performance</span>
+      </div>
+    </div>
+    <div class="about-copy">
+      <div class="section-head">
+        <p class="eyebrow">À propos de nous</p>
+        <h2>Une agence digitale proche de vos ambitions</h2>
+        <p>
+          <strong>SOUGHEF ORGANIZATION</strong> est une agence digitale en lancement, pensée pour
+          accompagner les entreprises dans la création de solutions web et leur communication
+          digitale.
+        </p>
+      </div>
+      <p>
+        Notre approche associe expertise technique, créativité et accompagnement personnalisé pour
+        vous aider à construire une présence en ligne cohérente et durable.
+      </p>
+      <div class="values">
+        @for (value of values; track value.title) {
+          <div class="value">
+            <b aria-hidden="true">{{ value.icon }}</b>
+            <div>
+              {{ value.title }}
+              <small>{{ value.subtitle }}</small>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

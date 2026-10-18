@@ -1,0 +1,33 @@
+<header class="topbar">
+  <div class="container nav">
+    <a
+      class="brand"
+      href="#accueil"
+      aria-label="SOUGHEF ORGANIZATION, accueil"
+      (click)="closeMenu()"
+    >
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <span class="brand-name">SOUGHEF<span class="brand-sub">ORGANIZATION</span></span>
+    </a>
+    <button
+      class="menu-toggle"
+      [attr.aria-label]="menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu'"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="navLinks"
+      (click)="toggleMenu()"
+    >
+      {{ menuOpen() ? '×' : '☰' }}
+    </button>
+    <nav
+      id="navLinks"
+      class="nav-links"
+      [class.open]="menuOpen()"
+      aria-label="Navigation principale"
+    >
+      @for (link of links; track link.href) {
+        <a [href]="link.href" (click)="closeMenu()">{{ link.label }}</a>
+      }
+    </nav>
+    <a class="btn" href="#contact">Contactez-nous <span aria-hidden="true">↗</span></a>
+  </div>
+</header>

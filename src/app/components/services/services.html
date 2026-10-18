@@ -1,0 +1,21 @@
+<section id="services">
+  <div class="container services-layout">
+    <div class="section-head">
+      <p class="eyebrow">Nos services</p>
+      <h2>Des solutions complètes pour votre présence digitale</h2>
+      <p>
+        Nous vous accompagnons à chaque étape de votre projet, de la création de votre site web à la
+        gestion de votre visibilité en ligne.
+      </p>
+    </div>
+    <div class="service-grid">
+      @for (service of services; track service.title) {
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">{{ service.icon }}</div>
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+<section class="hero" id="accueil">
+  <div class="container">
+    <div class="hero-content">
+      <p class="eyebrow">Agence digitale en Tunisie</p>
+      <h1>SOUGHEF <span>ORGANIZATION</span></h1>
+      <p class="hero-lead">
+        Des solutions digitales sur mesure pour propulser votre entreprise vers le succès.
+      </p>
+      <div class="service-line" aria-label="Nos domaines d'expertise">
+        @for (domain of domains; track domain) {
+          <span>{{ domain }}</span>
+        }
+      </div>
+      <div class="hero-actions">
+        <a class="btn" href="#services">Découvrir nos services <span aria-hidden="true">→</span></a>
+        <a class="btn btn-outline" href="#contact">Discutons de votre projet</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,63 @@
+<section class="contact" id="contact">
+  <div class="container contact-grid">
+    <div>
+      <div class="section-head">
+        <p class="eyebrow">Contact</p>
+        <h2>Parlons de votre projet</h2>
+        <p>
+          Vous avez une idée ? Nous pouvons vous aider à la concrétiser. Présentez-nous votre besoin
+          et nous reviendrons vers vous.
+        </p>
+      </div>
+      <div class="contact-details">
+        <span><b aria-hidden="true">✉</b> {{ email }} <small>(à configurer)</small></span>
+        <span><b aria-hidden="true">⌖</b> Tunisie · France · International</span>
+        <span><b aria-hidden="true">◷</b> Sur rendez-vous</span>
+      </div>
+    </div>
+    <form class="contact-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="field">
+        <label for="name">Nom complet *</label>
+        <input id="name" formControlName="name" autocomplete="name" placeholder="Votre nom" />
+      </div>
+      <div class="field">
+        <label for="email">Adresse e-mail *</label>
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          placeholder="vous@exemple.com"
+        />
+      </div>
+      <div class="field">
+        <label for="service">Service souhaité</label>
+        <select id="service" formControlName="service">
+          @for (option of serviceOptions; track option) {
+            <option [value]="option">{{ option }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label for="budget">Budget estimé</label>
+        <select id="budget" formControlName="budget">
+          @for (option of budgetOptions; track option) {
+            <option [value]="option">{{ option }}</option>
+          }
+        </select>
+      </div>
+      <div class="field full">
+        <label for="message">Parlez-nous de votre projet *</label>
+        <textarea
+          id="message"
+          formControlName="message"
+          placeholder="Votre besoin, vos objectifs, vos délais…"
+        ></textarea>
+      </div>
+      <button class="btn full" type="submit">
+        Préparer mon message <span aria-hidden="true">→</span>
+      </button>
+      <p class="form-note" aria-live="polite">{{ formNote() }}</p>
+    </form>
+  </div>
+</section>

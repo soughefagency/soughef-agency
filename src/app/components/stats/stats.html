@@ -1,0 +1,13 @@
+<section class="stats" aria-label="Nos engagements">
+  <div class="container stats-grid">
+    @for (stat of stats; track stat.value) {
+      <div class="stat">
+        <span class="stat-icon" aria-hidden="true">{{ stat.icon }}</span>
+        <div>
+          <strong>{{ stat.value }}</strong>
+          <span>{{ stat.label }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</section>
