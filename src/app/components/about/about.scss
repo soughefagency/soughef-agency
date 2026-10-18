@@ -69,14 +69,14 @@
 
 .value {
   display: flex;
-  gap: 11px;
+  gap: 12px;
   align-items: flex-start;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 750;
 
   b {
     color: var(--blue);
-    font-size: 21px;
+    font-size: 27px;
     line-height: 1;
   }
 
@@ -84,7 +84,7 @@
     display: block;
     margin-top: 4px;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 450;
   }
 }
