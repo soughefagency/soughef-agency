@@ -50,14 +50,14 @@
   }
 
   span {
-    color: #c6d4e5;
-    font-size: 12px;
+    color: #d5dfeb;
+    font-size: 13px;
   }
 }
 
 .about-copy > p {
   color: var(--muted);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .values {
@@ -71,7 +71,7 @@
   display: flex;
   gap: 11px;
   align-items: flex-start;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 750;
 
   b {
@@ -84,7 +84,7 @@
     display: block;
     margin-top: 4px;
     color: var(--muted);
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 450;
   }
 }

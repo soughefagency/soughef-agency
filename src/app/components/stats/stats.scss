@@ -17,19 +17,19 @@
 
   strong {
     display: block;
-    font-size: 25px;
+    font-size: 27px;
     line-height: 1.15;
   }
 
   span:last-child {
-    color: #c2ccda;
-    font-size: 11px;
+    color: #d5dfeb;
+    font-size: 15px;
   }
 }
 
 .stat-icon {
   color: var(--blue-light);
-  font-size: 27px;
+  font-size: 29px;
 }
 
 @media (max-width: 720px) {
@@ -48,7 +48,7 @@
     gap: 9px;
 
     strong {
-      font-size: 21px;
+      font-size: 24px;
     }
   }
 }

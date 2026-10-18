@@ -10,9 +10,12 @@
         </p>
       </div>
       <div class="contact-details">
-        <span><b aria-hidden="true">✉</b> {{ email }} <small>(à configurer)</small></span>
+        <span><b aria-hidden="true">✉</b> {{ config.email }}</span>
         <span><b aria-hidden="true">⌖</b> Tunisie · France · International</span>
         <span><b aria-hidden="true">◷</b> Sur rendez-vous</span>
+      </div>
+      <div class="contact-socials">
+        <app-social-links [size]="48" />
       </div>
     </div>
     <form class="contact-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>

@@ -37,6 +37,10 @@
 .hero-content {
   max-width: 680px;
   padding: 76px 0 82px;
+
+  .eyebrow {
+    color: var(--blue-light);
+  }
 }
 
 h1 {
@@ -64,7 +68,7 @@ h1 {
   flex-wrap: wrap;
   gap: 9px 12px;
   color: #d5dfeb;
-  font-size: 12px;
+  font-size: 15px;
   margin: 21px 0 28px;
 
   span + span::before {

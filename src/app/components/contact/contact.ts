@@ -2,12 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
-
-const CONTACT_EMAIL = 'contact@sougheforganization.com';
+import { SITE_CONFIG } from '../../site.config';
+import { SocialLinks } from '../social-links/social-links';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SocialLinks],
   templateUrl: './contact.html',
   styleUrl: './contact.scss',
 })
@@ -15,7 +15,7 @@ export class Contact {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly platformId = inject(PLATFORM_ID);
 
-  protected readonly email = CONTACT_EMAIL;
+  protected readonly config = SITE_CONFIG;
 
   protected readonly serviceOptions = [
     'Création de site web',
@@ -54,13 +54,13 @@ export class Contact {
     }
 
     const { name, email, service, budget, message } = this.form.getRawValue();
-    const subject = encodeURIComponent('Demande de devis — SOUGHEF ORGANIZATION');
+    const subject = encodeURIComponent(`Demande de devis — ${this.config.brand.fullName}`);
     const body = encodeURIComponent(
       `Nom : ${name}\nE-mail : ${email}\nService : ${service}\nBudget : ${budget}\n\nProjet :\n${message}`,
     );
 
     if (isPlatformBrowser(this.platformId)) {
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:${this.config.email}?subject=${subject}&body=${body}`;
     }
 
     this.formNote.set(

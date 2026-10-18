@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SITE_CONFIG } from '../../site.config';
 
 interface Value {
   icon: string;
@@ -12,6 +13,7 @@ interface Value {
   styleUrl: './about.scss',
 })
 export class About {
+  protected readonly config = SITE_CONFIG;
   protected readonly values: Value[] = [
     { icon: '⌘', title: 'Expertise technique', subtitle: 'Des solutions adaptées à vos besoins' },
     { icon: '✧', title: 'Créativité', subtitle: 'Une image qui vous ressemble' },

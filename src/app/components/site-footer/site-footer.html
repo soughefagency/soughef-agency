@@ -1,19 +1,27 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-top">
-      <a class="brand" href="#accueil" aria-label="SOUGHEF ORGANIZATION, retour en haut">
-        <span class="brand-mark" aria-hidden="true">S</span>
-        <span class="brand-name">SOUGHEF<span class="brand-sub">ORGANIZATION</span></span>
+      <a
+        class="brand"
+        href="#accueil"
+        [attr.aria-label]="config.brand.fullName + ', retour en haut'"
+      >
+        <span class="brand-mark" aria-hidden="true">
+          <img [src]="config.logos.mark" alt="" />
+        </span>
+        <span class="brand-name"
+          >{{ config.brand.name }}<span class="brand-sub">{{ config.brand.subName }}</span></span
+        >
       </a>
       <nav class="footer-links" aria-label="Navigation de pied de page">
         @for (link of links; track link.href) {
           <a [href]="link.href">{{ link.label }}</a>
         }
       </nav>
+      <app-social-links [size]="44" />
     </div>
     <div class="copyright">
-      <span>© {{ year() }} SOUGHEF ORGANIZATION. Tous droits réservés.</span>
-      <span>Votre vision, notre expertise.</span>
+      <span>© {{ year() }} {{ config.brand.fullName }}. Tous droits réservés.</span>
     </div>
   </div>
 </footer>

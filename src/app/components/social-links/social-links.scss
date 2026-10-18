@@ -1,0 +1,28 @@
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-link {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: #c2ccda;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+
+  svg {
+    width: 40%;
+    height: 40%;
+  }
+
+  &:hover {
+    color: white;
+    border-color: var(--blue-light);
+    background: rgba(8, 124, 255, 0.15);
+  }
+}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SITE_CONFIG } from '../../site.config';
 
 @Component({
   selector: 'app-hero',
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './hero.scss',
 })
 export class Hero {
+  protected readonly config = SITE_CONFIG;
   protected readonly domains = [
     'Sites web',
     'Marketing digital',

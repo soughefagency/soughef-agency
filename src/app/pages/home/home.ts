@@ -7,7 +7,8 @@ import { About } from '../../components/about/about';
 import { Portfolio } from '../../components/portfolio/portfolio';
 import { Demos } from '../../components/demos/demos';
 import { Stats } from '../../components/stats/stats';
-import { Testimonials } from '../../components/testimonials/testimonials';
+// Témoignages : à réactiver plus tard
+// import { Testimonials } from '../../components/testimonials/testimonials';
 import { Contact } from '../../components/contact/contact';
 import { SiteFooter } from '../../components/site-footer/site-footer';
 import { BackTop } from '../../components/back-top/back-top';
@@ -22,7 +23,7 @@ import { BackTop } from '../../components/back-top/back-top';
     Portfolio,
     Demos,
     Stats,
-    Testimonials,
+    // Testimonials,
     Contact,
     SiteFooter,
     BackTop,
