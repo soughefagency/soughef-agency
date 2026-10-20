@@ -14,6 +14,7 @@ export class SocialLinks {
     { key: 'facebook', label: 'Facebook', url: SITE_CONFIG.socials.facebook },
     { key: 'instagram', label: 'Instagram', url: SITE_CONFIG.socials.instagram },
     { key: 'tiktok', label: 'TikTok', url: SITE_CONFIG.socials.tiktok },
+    { key: 'youtube', label: 'YouTube', url: SITE_CONFIG.socials.youtube },
     { key: 'gmail', label: this.i18n.t().social.email, url: `mailto:${SITE_CONFIG.email}` },
   ]);
 

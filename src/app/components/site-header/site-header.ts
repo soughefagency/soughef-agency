@@ -27,6 +27,9 @@ export class SiteHeader implements OnDestroy {
 
   private observer?: IntersectionObserver;
 
+  /** Ids des sections croisant actuellement la bande sous le header. */
+  private readonly visible = new Set<string>();
+
   // Ordre aligné sur l'ordre des sections dans la page (home.html).
   protected readonly links: { href: string; key: keyof Dict['nav'] }[] = [
     { href: '#accueil', key: 'home' },
@@ -59,27 +62,39 @@ export class SiteHeader implements OnDestroy {
     this.menuOpen.set(false);
   }
 
-  /** Surligne le lien dont la section est dans la bande juste sous le header. */
+  /** Surligne le lien dont la section occupe la zone juste sous le header. */
   private observeSections(): void {
     const header = this.readHeaderHeight();
+    const order = this.links.map((link) => link.href.slice(1));
 
     this.observer = new IntersectionObserver(
       (entries) => {
+        // Met à jour l'ensemble des sections visibles dans la bande.
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            this.activeId.set(entry.target.id);
+            this.visible.add(entry.target.id);
+          } else {
+            this.visible.delete(entry.target.id);
           }
+        }
+
+        // La section active est la plus haute (ordre du document) encore visible :
+        // c'est celle qui occupe la zone immédiatement sous le header. En choisir
+        // une seule évite les sauts dus à l'ordre arbitraire des `entries`.
+        const current = order.find((id) => this.visible.has(id));
+        if (current) {
+          this.activeId.set(current);
         }
       },
       {
-        // Zone active : du bas du header jusqu'à ~30% de la hauteur de la fenêtre.
-        rootMargin: `-${header}px 0px -70% 0px`,
+        // Bande d'observation : du bas du header jusqu'à ~40% de la fenêtre.
+        rootMargin: `-${header}px 0px -60% 0px`,
         threshold: 0,
       },
     );
 
-    for (const link of this.links) {
-      const section = this.document.getElementById(link.href.slice(1));
+    for (const id of order) {
+      const section = this.document.getElementById(id);
       if (section) {
         this.observer.observe(section);
       }

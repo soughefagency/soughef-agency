@@ -19,9 +19,10 @@ export const SITE_CONFIG = {
 
   /** Réseaux sociaux — mettez l'URL complète ou '' pour masquer l'icône. */
   socials: {
-    facebook: 'https://www.facebook.com/sougheforganization',
+    facebook: 'https://www.facebook.com/people/Soughef-agency/61595810692275/',
     instagram: 'https://www.instagram.com/soughef.agency/',
-    tiktok: 'https://www.tiktok.com/@sougheforganization',
+    tiktok: 'https://www.tiktok.com/@soughefagency',
+    youtube: 'https://www.youtube.com/@soughefagency',
   },
 
   /** Fichiers dans public/. Remplacez les fichiers en conservant les noms. */
