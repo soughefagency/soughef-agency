@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
 interface Stat {
-  icon: string;
+  /** Clé de l'icône SVG rendue dans le template. */
+  key: 'tailored' | 'services' | 'support' | 'global';
   value: string;
   label: string;
 }
@@ -13,9 +14,9 @@ interface Stat {
 })
 export class Stats {
   protected readonly stats: Stat[] = [
-    { icon: '♙', value: 'Sur mesure', label: 'Selon vos objectifs' },
-    { icon: '▣', value: 'Multi-services', label: 'Un seul interlocuteur' },
-    { icon: '◷', value: 'À vos côtés', label: 'Du brief à la livraison' },
-    { icon: '◎', value: 'International', label: 'Tunisie, France et ailleurs' },
+    { key: 'tailored', value: 'Sur mesure', label: 'Selon vos objectifs' },
+    { key: 'services', value: 'Multi-services', label: 'Un seul interlocuteur' },
+    { key: 'support', value: 'À vos côtés', label: 'Du brief à la livraison' },
+    { key: 'global', value: 'International', label: 'Tunisie, France et ailleurs' },
   ];
 }

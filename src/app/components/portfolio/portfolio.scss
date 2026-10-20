@@ -1,7 +1,126 @@
+.portfolio-carousel {
+  display: grid;
+  gap: 22px;
+}
+
+.portfolio-track {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.portfolio-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  /* Marge verticale pour ne pas rogner le lift + l'ombre des cartes au survol. */
+  padding-block: 6px 28px;
+  margin-block: -6px -28px;
+}
+
+.portfolio-slider {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 .portfolio-grid {
+  flex: 0 0 100%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+  align-content: start;
+}
+
+.portfolio-nav {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(145deg, var(--blue), #0045a8);
+  box-shadow: 0 8px 18px -8px rgba(0, 98, 223, 0.55);
+  cursor: pointer;
+  transition:
+    filter 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 12px 26px -8px rgba(0, 98, 223, 0.6);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(53, 161, 255, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+.portfolio-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.portfolio-dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: #b9c7d8;
+    transition:
+      width 0.25s ease,
+      background 0.2s;
+  }
+
+  &:hover::after {
+    background: #7fb4ef;
+  }
+
+  &.is-active {
+    width: 32px;
+
+    &::after {
+      width: 22px;
+      background: var(--blue);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
 }
 
 .project {
@@ -9,13 +128,16 @@
   border: 1px solid var(--line);
   border-radius: 16px;
   background: white;
+  box-shadow: 0 5px 18px rgba(20, 45, 75, 0.04);
   transition:
     transform 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow);
+    border-color: #b5d8ff;
+    box-shadow: 0 20px 40px -14px rgba(0, 85, 200, 0.2);
   }
 }
 
@@ -49,6 +171,10 @@
 }
 
 @media (max-width: 980px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .project-image {
     height: 175px;
   }
@@ -61,5 +187,32 @@
 
   .project-image {
     height: 230px;
+  }
+
+  .portfolio-track {
+    gap: 10px;
+  }
+
+  .portfolio-nav {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .portfolio-track {
+    gap: 6px;
+  }
+
+  .portfolio-nav {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-slider {
+    transition: none;
   }
 }

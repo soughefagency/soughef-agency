@@ -31,7 +31,8 @@
     transition: color 0.2s;
 
     &:hover,
-    &:focus-visible {
+    &:focus-visible,
+    &.active {
       color: var(--blue-light);
     }
   }

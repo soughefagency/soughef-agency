@@ -5,22 +5,77 @@
       <h2>Des idées transformées en expériences digitales</h2>
       <p>Découvrez quelques exemples de projets représentatifs de nos domaines de compétence.</p>
     </div>
-    <div class="portfolio-grid">
-      @for (project of projects; track project.title) {
-        <article class="project">
-          <div
-            class="project-image"
-            role="img"
-            [attr.aria-label]="project.alt"
-            [style.background-image]="'url(' + project.image + ')'"
-          ></div>
-          <div class="project-info">
-            <span class="project-tag">{{ project.tag }}</span>
-            <h3>{{ project.title }}</h3>
-            <p>{{ project.description }}</p>
+
+    <div
+      class="portfolio-carousel"
+      role="group"
+      aria-roledescription="carrousel"
+      aria-label="Nos réalisations"
+    >
+      <div class="portfolio-track">
+        <button
+          type="button"
+          class="portfolio-nav portfolio-nav-prev"
+          (click)="prev()"
+          [disabled]="!canPrev()"
+          [attr.aria-label]="'Réalisations précédentes (' + page() + ' sur ' + pageCount() + ')'"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="15 5 8 12 15 19" />
+          </svg>
+        </button>
+
+        <div class="portfolio-viewport">
+          <div class="portfolio-slider" [style.transform]="'translateX(-' + page() * 100 + '%)'">
+            @for (group of pages(); track $index) {
+              <div class="portfolio-grid" [inert]="$index !== page()">
+                @for (project of group; track project.title) {
+                  <article class="project">
+                    <div
+                      class="project-image"
+                      role="img"
+                      [attr.aria-label]="project.alt"
+                      [style.background-image]="'url(' + project.image + ')'"
+                    ></div>
+                    <div class="project-info">
+                      <span class="project-tag">{{ project.tag }}</span>
+                      <h3>{{ project.title }}</h3>
+                      <p>{{ project.description }}</p>
+                    </div>
+                  </article>
+                }
+              </div>
+            }
           </div>
-        </article>
-      }
+        </div>
+
+        <button
+          type="button"
+          class="portfolio-nav portfolio-nav-next"
+          (click)="next()"
+          [disabled]="!canNext()"
+          [attr.aria-label]="'Réalisations suivantes (' + (page() + 1) + ' sur ' + pageCount() + ')'"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 5 16 12 9 19" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="portfolio-dots">
+        @for (item of pageCountArray(); track item) {
+          <button
+            type="button"
+            class="portfolio-dot"
+            [class.is-active]="$index === page()"
+            [attr.aria-current]="$index === page() ? 'true' : null"
+            (click)="goTo($index)"
+            [attr.aria-label]="'Afficher le groupe ' + ($index + 1)"
+          ></button>
+        }
+      </div>
     </div>
   </div>
 </section>

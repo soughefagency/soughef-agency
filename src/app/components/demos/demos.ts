@@ -9,7 +9,6 @@ interface Demo {
   tag: string;
   title: string;
   description: string;
-  file: string;
 }
 
 /** Nombre de cartes visibles selon la largeur d'écran. */
@@ -38,9 +37,14 @@ export class Demos {
   protected readonly page = signal(0);
   protected readonly pageCount = computed(() => Math.ceil(this.demos.length / this.pageSize()));
 
-  protected readonly visibleDemos = computed(() => {
-    const start = this.page() * this.pageSize();
-    return this.demos.slice(start, start + this.pageSize());
+  /** Démos regroupées par page : toutes rendues côte à côte dans la piste glissante. */
+  protected readonly pages = computed(() => {
+    const size = this.pageSize();
+    const groups: Demo[][] = [];
+    for (let i = 0; i < this.demos.length; i += size) {
+      groups.push(this.demos.slice(i, i + size));
+    }
+    return groups;
   });
 
   protected readonly canPrev = computed(() => this.page() > 0);
@@ -61,7 +65,6 @@ export class Demos {
       tag: 'Restauration',
       title: 'Site web de restaurant',
       description: 'Présentation du restaurant, mise en valeur du menu et parcours de réservation.',
-      file: 'Démo vidéo · Site responsive',
     },
     {
       video: 'videos/demo-site-ecommerce.mp4',
@@ -70,7 +73,6 @@ export class Demos {
       title: 'Site e-commerce',
       description:
         "Présentation des produits, catégories et parcours d'achat d'une boutique en ligne.",
-      file: 'Démo vidéo · Boutique en ligne',
     },
     {
       video: 'videos/demo-site-immobilier.mp4',
@@ -78,7 +80,6 @@ export class Demos {
       tag: 'Immobilier',
       title: 'Site web immobilier',
       description: 'Vitrine de biens, fiches de propriétés et expérience de recherche simplifiée.',
-      file: 'Démo vidéo · Catalogue de biens',
     },
     {
       video: 'videos/demo-site-sante.mp4',
@@ -86,7 +87,6 @@ export class Demos {
       tag: 'Santé',
       title: 'Site cabinet médical',
       description: "Présentation de l'équipe, spécialités et prise de rendez-vous en ligne.",
-      file: 'Démo vidéo · Prise de rendez-vous',
     },
     {
       video: 'videos/demo-site-voyage.mp4',
@@ -94,7 +94,6 @@ export class Demos {
       tag: 'Voyage',
       title: 'Site agence de voyage',
       description: 'Offres de séjours, destinations phares et réservation d’itinéraires.',
-      file: 'Démo vidéo · Réservation de séjours',
     },
     {
       video: 'videos/demo-site-mode.mp4',
@@ -102,7 +101,6 @@ export class Demos {
       tag: 'Mode',
       title: 'Site de marque mode',
       description: 'Collections saisonnières, lookbooks et expérience mobile-first.',
-      file: 'Démo vidéo · Collections en ligne',
     },
   ];
 

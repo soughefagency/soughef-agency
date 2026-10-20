@@ -15,85 +15,92 @@
       aria-roledescription="carrousel"
       aria-label="Démonstrations de sites web"
     >
-      @for (currentPage of [page()]; track currentPage) {
-        <div class="demo-grid">
-          @for (demo of visibleDemos(); track demo.title) {
-            <article class="demo-card">
-              <div
-                class="demo-video"
-                (click)="open(demo)"
-                (mouseenter)="onHoverStart($event)"
-                (mouseleave)="onHoverStop($event)"
-              >
-                <video
-                  preload="metadata"
-                  playsinline
-                  [attr.aria-label]="demo.ariaLabel"
-                  (loadedmetadata)="onLoadedMetadata(demo, $event)"
-                >
-                  <source [src]="demo.video + '#t=0.1'" type="video/mp4" />
-                  Votre navigateur ne prend pas en charge la lecture vidéo.
-                </video>
-                <button
-                  type="button"
-                  class="demo-play"
-                  (click)="open(demo)"
-                  [attr.aria-label]="'Lire la démonstration — ' + demo.title"
-                >
-                  <span aria-hidden="true">▶</span>
-                </button>
-                @if (durations()[demo.title]; as duration) {
-                  <span class="demo-duration" aria-hidden="true">{{ duration }}</span>
-                }
-              </div>
-              <div class="demo-info">
-                <span class="project-tag">{{ demo.tag }}</span>
-                <h3>{{ demo.title }}</h3>
-                <p>{{ demo.description }}</p>
-                <span class="demo-file">{{ demo.file }}</span>
-              </div>
-            </article>
-          }
-        </div>
-      }
-
-      <div class="demo-controls">
+      <div class="demo-track">
         <button
           type="button"
-          class="demo-nav"
+          class="demo-nav demo-nav-prev"
           (click)="prev()"
           [disabled]="!canPrev()"
           [attr.aria-label]="'Démonstrations précédentes (' + page() + ' sur ' + pageCount() + ')'"
         >
-          <span aria-hidden="true">←</span>
-          <span class="demo-nav-text">Précédent</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="15 5 8 12 15 19" />
+          </svg>
         </button>
 
-        <div class="demo-dots">
-          @for (item of pageCountArray(); track $index) {
-            <button
-              type="button"
-              class="demo-dot"
-              [class.is-active]="$index === page()"
-              [attr.aria-current]="$index === page() ? 'true' : null"
-              (click)="goTo($index)"
-              [attr.aria-label]="'Afficher le groupe ' + $index + 1"
-            ></button>
-          }
+        <div class="demo-viewport">
+          <div class="demo-slider" [style.transform]="'translateX(-' + page() * 100 + '%)'">
+            @for (group of pages(); track $index) {
+              <div class="demo-grid" [inert]="$index !== page()">
+                @for (demo of group; track demo.title) {
+                  <article class="demo-card">
+                    <div
+                      class="demo-video"
+                      (click)="open(demo)"
+                      (mouseenter)="onHoverStart($event)"
+                      (mouseleave)="onHoverStop($event)"
+                    >
+                      <video
+                        preload="metadata"
+                        playsinline
+                        [attr.aria-label]="demo.ariaLabel"
+                        (loadedmetadata)="onLoadedMetadata(demo, $event)"
+                      >
+                        <source [src]="demo.video + '#t=0.1'" type="video/mp4" />
+                        Votre navigateur ne prend pas en charge la lecture vidéo.
+                      </video>
+                      <button
+                        type="button"
+                        class="demo-play"
+                        (click)="open(demo)"
+                        [attr.aria-label]="'Lire la démonstration — ' + demo.title"
+                      >
+                        <span aria-hidden="true">▶</span>
+                      </button>
+                      @if (durations()[demo.title]; as duration) {
+                        <span class="demo-duration" aria-hidden="true">{{ duration }}</span>
+                      }
+                    </div>
+                    <div class="demo-info">
+                      <span class="project-tag">{{ demo.tag }}</span>
+                      <h3>{{ demo.title }}</h3>
+                      <p>{{ demo.description }}</p>
+                    </div>
+                  </article>
+                }
+              </div>
+            }
+          </div>
         </div>
 
         <button
           type="button"
-          class="demo-nav"
+          class="demo-nav demo-nav-next"
           (click)="next()"
           [disabled]="!canNext()"
           [attr.aria-label]="
             'Démonstrations suivantes (' + (page() + 1) + ' sur ' + pageCount() + ')'
           "
         >
-          <span class="demo-nav-text">Suivant</span>
-          <span aria-hidden="true">→</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 5 16 12 9 19" />
+          </svg>
         </button>
+      </div>
+
+      <div class="demo-dots">
+        @for (item of pageCountArray(); track item) {
+          <button
+            type="button"
+            class="demo-dot"
+            [class.is-active]="$index === page()"
+            [attr.aria-current]="$index === page() ? 'true' : null"
+            (click)="goTo($index)"
+            [attr.aria-label]="'Afficher le groupe ' + $index + 1"
+          ></button>
+        }
       </div>
     </div>
   </div>

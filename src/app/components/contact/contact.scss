@@ -1,6 +1,14 @@
 .contact {
   position: relative;
   isolation: isolate;
+  /**
+   * Dernière section : son haut se cale derrière le header (contenu à 5px sous la nav),
+   * donc elle doit faire une pleine hauteur d'écran pour couvrir jusqu'en bas et
+   * repousser le footer sous la ligne de flottaison à l'arrivée de l'ancre.
+   */
+  min-height: 100svh;
+  /* Resserre l'écart titre↔header de 14px (global) à 5px : -9 = 5 - 14, constant tous écrans. */
+  scroll-margin-top: -9px;
   color: white;
   background: var(--navy);
   overflow: hidden;

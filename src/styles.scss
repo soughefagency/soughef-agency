@@ -10,6 +10,12 @@
   --line: #e2eaf4;
   --radius: 18px;
   --shadow: 0 14px 38px rgba(15, 39, 71, 0.08);
+  /** Hauteur de la barre de navigation collante (sert d'offset d'ancrage). */
+  --header-height: 78px;
+  /** Padding vertical standard des sections (synchronisé avec l'offset d'ancrage). */
+  --section-pad-top: 82px;
+  /** Espace souhaité entre le header et le titre de la section à l'arrivée d'une ancre. */
+  --anchor-gap: 14px;
 }
 
 * {
@@ -18,7 +24,15 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 82px;
+  /**
+   * L'ancre doit amener le TITRE juste sous le header. Comme la section a
+   * --section-pad-top de padding interne, on soustrait ce padding de l'offset
+   * (header + petit écart) pour que le contenu se cale sous la nav, sans vide.
+   */
+  scroll-padding-top: max(
+    0px,
+    calc(var(--header-height) + var(--anchor-gap) - var(--section-pad-top))
+  );
 }
 
 body {
@@ -119,7 +133,7 @@ a {
 }
 
 section {
-  padding: 82px 0;
+  padding: var(--section-pad-top) 0;
 }
 
 .section-head {
@@ -188,12 +202,13 @@ h2 {
 }
 
 @media (max-width: 720px) {
-  .container {
-    width: min(100% - 32px, 560px);
+  :root {
+    --header-height: 70px;
+    --section-pad-top: 62px;
   }
 
-  section {
-    padding: 62px 0;
+  .container {
+    width: min(100% - 32px, 560px);
   }
 }
 

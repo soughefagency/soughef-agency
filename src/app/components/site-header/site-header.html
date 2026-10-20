@@ -29,7 +29,13 @@
       aria-label="Navigation principale"
     >
       @for (link of links; track link.href) {
-        <a [href]="link.href" (click)="closeMenu()">{{ link.label }}</a>
+        <a
+          [href]="link.href"
+          [class.active]="isActive(link.href)"
+          [attr.aria-current]="isActive(link.href) ? 'true' : null"
+          (click)="closeMenu()"
+          >{{ link.label }}</a
+        >
       }
     </nav>
     <a class="btn" href="#contact">Contactez-nous <span aria-hidden="true">↗</span></a>

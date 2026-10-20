@@ -15,12 +15,12 @@ export const SITE_CONFIG = {
   },
 
   /** Adresse e-mail de contact (formulaire + section contact). */
-  email: 'contact@sougheforganization.com',
+  email: 'soughef.agency@gmail.com',
 
   /** Réseaux sociaux — mettez l'URL complète ou '' pour masquer l'icône. */
   socials: {
     facebook: 'https://www.facebook.com/sougheforganization',
-    instagram: 'https://www.instagram.com/sougheforganization',
+    instagram: 'https://www.instagram.com/soughef.agency/',
     tiktok: 'https://www.tiktok.com/@sougheforganization',
   },
 
