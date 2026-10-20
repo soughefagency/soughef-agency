@@ -1,9 +1,23 @@
-import { Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import {
+  AbstractControl,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { SITE_CONFIG } from '../../site.config';
+import { ContactMessage, ContactService, ContactStatus } from '../../services/contact.service';
 import { SocialLinks } from '../social-links/social-links';
+
+type RequiredField = 'name' | 'email' | 'message';
+
+/** Refuse les valeurs composées uniquement d'espaces. */
+function notBlank(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  return typeof value === 'string' && value.trim().length > 0 ? null : { notBlank: true };
+}
 
 @Component({
   selector: 'app-contact',
@@ -14,6 +28,8 @@ import { SocialLinks } from '../social-links/social-links';
 export class Contact {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly document = inject(DOCUMENT);
+  private readonly contactService = inject(ContactService);
 
   protected readonly config = SITE_CONFIG;
 
@@ -35,36 +51,97 @@ export class Contact {
     'Budget en euros à définir',
   ];
 
-  protected readonly formNote = signal(
-    "Le formulaire ouvrira votre application e-mail avec votre demande préremplie. Aucun message n'est envoyé automatiquement depuis ce site.",
-  );
-
   protected readonly form = this.fb.group({
-    name: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
+    name: ['', notBlank],
+    email: ['', [notBlank, Validators.email]],
     service: ['Création de site web'],
     budget: ['À définir'],
-    message: ['', Validators.required],
+    message: ['', [notBlank, Validators.minLength(10)]],
   });
 
-  protected submit(): void {
+  /** Vrai dès la première tentative d'envoi : déclenche l'affichage des erreurs. */
+  protected readonly submitted = signal(false);
+  protected readonly sending = signal(false);
+  protected readonly status = signal<'idle' | ContactStatus>('idle');
+
+  protected readonly note = computed(() => {
+    switch (this.status()) {
+      case 'draft-opened':
+        return `Votre demande est prête dans votre application e-mail. Si elle ne s'ouvre pas, écrivez-nous à ${this.config.email}.`;
+      case 'error':
+        return `L'ouverture de votre messagerie a échoué. Écrivez-nous directement à ${this.config.email}.`;
+      default:
+        return "Aucune donnée n'est transmise à un serveur : votre demande s'ouvre dans votre application e-mail.";
+    }
+  });
+
+  protected async submit(): Promise<void> {
+    this.submitted.set(true);
+
     if (this.form.invalid) {
-      this.form.markAllAsTouched();
+      this.focusFirstInvalid();
       return;
     }
 
-    const { name, email, service, budget, message } = this.form.getRawValue();
-    const subject = encodeURIComponent(`Demande de devis — ${this.config.brand.fullName}`);
-    const body = encodeURIComponent(
-      `Nom : ${name}\nE-mail : ${email}\nService : ${service}\nBudget : ${budget}\n\nProjet :\n${message}`,
-    );
+    this.sending.set(true);
+    this.status.set('idle');
 
-    if (isPlatformBrowser(this.platformId)) {
-      window.location.href = `mailto:${this.config.email}?subject=${subject}&body=${body}`;
+    const message = this.normalizedMessage();
+    this.form.patchValue(message);
+
+    this.status.set(await this.contactService.send(message));
+    this.sending.set(false);
+  }
+
+  /** Indique si l'erreur d'un champ doit être visible. */
+  protected showError(field: RequiredField): boolean {
+    const control = this.form.controls[field];
+    return control.invalid && (control.touched || this.submitted());
+  }
+
+  protected errorMessage(field: RequiredField): string {
+    if (!this.showError(field)) {
+      return '';
     }
 
-    this.formNote.set(
-      "Si votre application e-mail ne s'est pas ouverte, vérifiez votre configuration ou contactez-nous directement.",
+    const control = this.form.controls[field];
+
+    if (control.hasError('notBlank')) {
+      return field === 'message' ? 'Merci de décrire votre projet.' : 'Ce champ est obligatoire.';
+    }
+    if (control.hasError('email')) {
+      return 'Adresse e-mail invalide (exemple : vous@exemple.com).';
+    }
+    if (control.hasError('minlength')) {
+      return 'Encore quelques mots pour bien cerner votre besoin.';
+    }
+
+    return 'Ce champ est invalide.';
+  }
+
+  private normalizedMessage(): ContactMessage {
+    const value = this.form.getRawValue();
+
+    return {
+      name: value.name.trim(),
+      email: value.email.trim(),
+      service: value.service,
+      budget: value.budget,
+      message: value.message.trim(),
+    };
+  }
+
+  private focusFirstInvalid(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    const invalid = (['name', 'email', 'message'] as const).find(
+      (field) => this.form.controls[field].invalid,
     );
+
+    if (invalid) {
+      this.document.getElementById(invalid)?.focus();
+    }
   }
 }

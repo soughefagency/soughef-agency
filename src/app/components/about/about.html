@@ -1,12 +1,26 @@
 <section class="about" id="apropos">
   <div class="container about-grid">
-    <div class="about-visual" role="img" aria-label="Espace de travail créatif et numérique">
-      <div class="about-photo"></div>
+    <div class="about-visual">
+      <div
+        class="about-photo"
+        role="img"
+        [attr.aria-label]="'Espace de travail créatif et numérique de ' + config.brand.fullName"
+        [style.background-image]="'url(' + workspaceImage + ')'"
+      >
+        <span class="about-photo-tag">Votre partenaire digital</span>
+      </div>
+
       <div class="about-stamp">
-        <strong>{{ config.brand.name }}</strong>
-        <span>Innovation · Créativité · Performance</span>
+        <div class="about-stamp-logo">
+          <img [src]="config.logos.mark" alt="" width="54" height="54" />
+        </div>
+        <div class="about-stamp-copy">
+          <strong>{{ config.brand.fullName }}</strong>
+          <span>{{ config.brand.tagline }}</span>
+        </div>
       </div>
     </div>
+
     <div class="about-copy">
       <div class="section-head">
         <p class="eyebrow">À propos de nous</p>

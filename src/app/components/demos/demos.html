@@ -8,29 +8,102 @@
         pour différents secteurs d'activité.
       </p>
     </div>
-    <div class="demo-grid">
-      @for (demo of demos; track demo.title) {
-        <article class="demo-card">
-          <div class="demo-video">
-            <video
-              controls
-              preload="metadata"
-              playsinline
-              [attr.poster]="demo.poster"
-              [attr.aria-label]="demo.ariaLabel"
-            >
-              <source [attr.src]="demo.video" type="video/mp4" />
-              Votre navigateur ne prend pas en charge la lecture vidéo.
-            </video>
-          </div>
-          <div class="demo-info">
-            <span class="project-tag">{{ demo.tag }}</span>
-            <h3>{{ demo.title }}</h3>
-            <p>{{ demo.description }}</p>
-            <span class="demo-file">{{ demo.file }}</span>
-          </div>
-        </article>
+
+    <div
+      class="demo-carousel"
+      role="group"
+      aria-roledescription="carrousel"
+      aria-label="Démonstrations de sites web"
+    >
+      @for (currentPage of [page()]; track currentPage) {
+        <div class="demo-grid">
+          @for (demo of visibleDemos(); track demo.title) {
+            <article class="demo-card">
+              <div
+                class="demo-video"
+                (click)="open(demo)"
+                (mouseenter)="onHoverStart($event)"
+                (mouseleave)="onHoverStop($event)"
+              >
+                <video
+                  preload="metadata"
+                  playsinline
+                  [attr.aria-label]="demo.ariaLabel"
+                  (loadedmetadata)="onLoadedMetadata(demo, $event)"
+                >
+                  <source [src]="demo.video + '#t=0.1'" type="video/mp4" />
+                  Votre navigateur ne prend pas en charge la lecture vidéo.
+                </video>
+                <button
+                  type="button"
+                  class="demo-play"
+                  (click)="open(demo)"
+                  [attr.aria-label]="'Lire la démonstration — ' + demo.title"
+                >
+                  <span aria-hidden="true">▶</span>
+                </button>
+                @if (durations()[demo.title]; as duration) {
+                  <span class="demo-duration" aria-hidden="true">{{ duration }}</span>
+                }
+              </div>
+              <div class="demo-info">
+                <span class="project-tag">{{ demo.tag }}</span>
+                <h3>{{ demo.title }}</h3>
+                <p>{{ demo.description }}</p>
+                <span class="demo-file">{{ demo.file }}</span>
+              </div>
+            </article>
+          }
+        </div>
       }
+
+      <div class="demo-controls">
+        <button
+          type="button"
+          class="demo-nav"
+          (click)="prev()"
+          [disabled]="!canPrev()"
+          [attr.aria-label]="'Démonstrations précédentes (' + page() + ' sur ' + pageCount() + ')'"
+        >
+          <span aria-hidden="true">←</span>
+          <span class="demo-nav-text">Précédent</span>
+        </button>
+
+        <div class="demo-dots">
+          @for (item of pageCountArray(); track $index) {
+            <button
+              type="button"
+              class="demo-dot"
+              [class.is-active]="$index === page()"
+              [attr.aria-current]="$index === page() ? 'true' : null"
+              (click)="goTo($index)"
+              [attr.aria-label]="'Afficher le groupe ' + $index + 1"
+            ></button>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="demo-nav"
+          (click)="next()"
+          [disabled]="!canNext()"
+          [attr.aria-label]="
+            'Démonstrations suivantes (' + (page() + 1) + ' sur ' + pageCount() + ')'
+          "
+        >
+          <span class="demo-nav-text">Suivant</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
     </div>
   </div>
+
+  @if (activeDemo(); as demo) {
+    <app-player-video
+      [video]="demo.video"
+      [title]="demo.title"
+      [tag]="demo.tag"
+      (closed)="closePlayer()"
+    />
+  }
 </section>

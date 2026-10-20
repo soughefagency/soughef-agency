@@ -1,0 +1,39 @@
+<div class="player-backdrop" (click)="close()">
+  <div
+    class="player-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="player-video-title"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="player-head">
+      <div class="player-heading">
+        @if (tag()) {
+          <span class="project-tag">{{ tag() }}</span>
+        }
+        <h2 id="player-video-title">{{ title() }}</h2>
+      </div>
+      <button
+        type="button"
+        class="player-close"
+        #closeButton
+        (click)="close()"
+        aria-label="Fermer la vidéo"
+      >
+        <span aria-hidden="true">✕</span>
+      </button>
+    </div>
+    <div class="player-stage">
+      <video
+        #videoPlayer
+        controls
+        autoplay
+        playsinline
+        [src]="video()"
+        [attr.aria-label]="'Démonstration vidéo — ' + title()"
+      >
+        Votre navigateur ne prend pas en charge la lecture vidéo.
+      </video>
+    </div>
+  </div>
+</div>

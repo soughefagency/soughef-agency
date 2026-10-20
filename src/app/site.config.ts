@@ -10,6 +10,8 @@ export const SITE_CONFIG = {
     subName: 'AGENCY',
     /** Utilisé pour le <title>, les sujets mailto, les aria-labels… */
     fullName: 'SOUGHEF AGENCY',
+    /** Accroche courte (stamp À propos, mentions de marque). */
+    tagline: 'Création web, marketing digital et identité de marque.',
   },
 
   /** Adresse e-mail de contact (formulaire + section contact). */
