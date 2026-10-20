@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-
-interface Service {
-  icon: string;
-  title: string;
-  description: string;
-}
+import { Component, computed, inject } from '@angular/core';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-services',
@@ -12,36 +7,13 @@ interface Service {
   styleUrl: './services.scss',
 })
 export class Services {
-  protected readonly services: Service[] = [
-    {
-      icon: '⌘',
-      title: 'Création de sites web',
-      description: 'Sites vitrines, e-commerce et applications web adaptés à vos objectifs.',
-    },
-    {
-      icon: '↗',
-      title: 'Marketing digital',
-      description: 'SEO, publicités en ligne et stratégie de contenu pour toucher vos clients.',
-    },
-    {
-      icon: '▷',
-      title: 'Montage vidéo',
-      description: 'Reels, vidéos promotionnelles et formats courts pour les réseaux sociaux.',
-    },
-    {
-      icon: '✳',
-      title: 'Design & Branding',
-      description: 'Identité visuelle, logos et visuels cohérents avec votre marque.',
-    },
-    {
-      icon: '⚙',
-      title: 'Maintenance & Support',
-      description: 'Mises à jour, sécurité, corrections et optimisation de votre site.',
-    },
-    {
-      icon: '▥',
-      title: 'Conseil & Accompagnement',
-      description: 'Une stratégie digitale adaptée à vos besoins et à vos objectifs.',
-    },
-  ];
+  private readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
+  /** Icônes (non traduisibles) alignées sur l'ordre des services du dictionnaire. */
+  private readonly icons = ['⌘', '↗', '▷', '✳', '⚙', '▥'];
+
+  protected readonly services = computed(() =>
+    this.t().services.items.map((item, index) => ({ icon: this.icons[index], ...item })),
+  );
 }

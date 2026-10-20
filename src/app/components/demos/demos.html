@@ -1,19 +1,16 @@
 <section class="demos" id="demos">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Démonstrations de sites web</p>
-      <h2>Visitez nos projets en vidéo</h2>
-      <p>
-        Découvrez l'expérience de navigation, les pages et les fonctionnalités de sites web conçus
-        pour différents secteurs d'activité.
-      </p>
+      <p class="eyebrow">{{ t().demos.eyebrow }}</p>
+      <h2>{{ t().demos.title }}</h2>
+      <p>{{ t().demos.lead }}</p>
     </div>
 
     <div
       class="demo-carousel"
       role="group"
       aria-roledescription="carrousel"
-      aria-label="Démonstrations de sites web"
+      [attr.aria-label]="t().demos.eyebrow"
     >
       <div class="demo-track">
         <button
@@ -21,7 +18,7 @@
           class="demo-nav demo-nav-prev"
           (click)="prev()"
           [disabled]="!canPrev()"
-          [attr.aria-label]="'Démonstrations précédentes (' + page() + ' sur ' + pageCount() + ')'"
+          [attr.aria-label]="t().demos.prev + ' (' + page() + ' / ' + pageCount() + ')'"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -33,7 +30,7 @@
           <div class="demo-slider" [style.transform]="'translateX(-' + page() * 100 + '%)'">
             @for (group of pages(); track $index) {
               <div class="demo-grid" [inert]="$index !== page()">
-                @for (demo of group; track demo.title) {
+                @for (demo of group; track demo.video) {
                   <article class="demo-card">
                     <div
                       class="demo-video"
@@ -54,11 +51,11 @@
                         type="button"
                         class="demo-play"
                         (click)="open(demo)"
-                        [attr.aria-label]="'Lire la démonstration — ' + demo.title"
+                        [attr.aria-label]="t().demos.play + ' — ' + demo.title"
                       >
                         <span aria-hidden="true">▶</span>
                       </button>
-                      @if (durations()[demo.title]; as duration) {
+                      @if (durations()[demo.video]; as duration) {
                         <span class="demo-duration" aria-hidden="true">{{ duration }}</span>
                       }
                     </div>
@@ -79,9 +76,7 @@
           class="demo-nav demo-nav-next"
           (click)="next()"
           [disabled]="!canNext()"
-          [attr.aria-label]="
-            'Démonstrations suivantes (' + (page() + 1) + ' sur ' + pageCount() + ')'
-          "
+          [attr.aria-label]="t().demos.next + ' (' + (page() + 1) + ' / ' + pageCount() + ')'"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

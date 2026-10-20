@@ -1,9 +1,9 @@
 <section id="portfolio">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Nos réalisations</p>
-      <h2>Des idées transformées en expériences digitales</h2>
-      <p>Découvrez quelques exemples de projets représentatifs de nos domaines de compétence.</p>
+      <p class="eyebrow">{{ t().portfolio.eyebrow }}</p>
+      <h2>{{ t().portfolio.title }}</h2>
+      <p>{{ t().portfolio.lead }}</p>
     </div>
 
     <div
@@ -18,7 +18,7 @@
           class="portfolio-nav portfolio-nav-prev"
           (click)="prev()"
           [disabled]="!canPrev()"
-          [attr.aria-label]="'Réalisations précédentes (' + page() + ' sur ' + pageCount() + ')'"
+          [attr.aria-label]="t().portfolio.prev + ' (' + page() + ' / ' + pageCount() + ')'"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -55,7 +55,7 @@
           class="portfolio-nav portfolio-nav-next"
           (click)="next()"
           [disabled]="!canNext()"
-          [attr.aria-label]="'Réalisations suivantes (' + (page() + 1) + ' sur ' + pageCount() + ')'"
+          [attr.aria-label]="t().portfolio.next + ' (' + (page() + 1) + ' / ' + pageCount() + ')'"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

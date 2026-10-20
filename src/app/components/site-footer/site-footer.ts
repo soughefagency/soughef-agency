@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { SITE_CONFIG } from '../../site.config';
+import { I18nService } from '../../i18n/i18n.service';
+import { Dict } from '../../i18n/translations';
 import { SocialLinks } from '../social-links/social-links';
 
 @Component({
@@ -11,14 +13,18 @@ import { SocialLinks } from '../social-links/social-links';
 export class SiteFooter {
   protected readonly config = SITE_CONFIG;
 
+  private readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
   protected readonly year = signal(new Date().getFullYear());
 
-  protected readonly links = [
-    { href: '#accueil', label: 'Accueil' },
-    { href: '#services', label: 'Services' },
-    { href: '#portfolio', label: 'Portfolio' },
-    { href: '#demos', label: 'Démos de sites web' },
-    { href: '#apropos', label: 'À propos' },
-    { href: '#contact', label: 'Contact' },
+  // Ordre aligné sur l'ordre des sections dans la page (home.html).
+  protected readonly links: { href: string; key: keyof Dict['nav'] }[] = [
+    { href: '#accueil', key: 'home' },
+    { href: '#services', key: 'services' },
+    { href: '#apropos', key: 'about' },
+    { href: '#portfolio', key: 'portfolio' },
+    { href: '#demos', key: 'demos' },
+    { href: '#contact', key: 'contact' },
   ];
 }

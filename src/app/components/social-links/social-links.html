@@ -1,5 +1,5 @@
 <div class="socials">
-  @for (social of socials; track social.key) {
+  @for (social of socials(); track social.key) {
     @if (social.url) {
       <a
         class="social-link"

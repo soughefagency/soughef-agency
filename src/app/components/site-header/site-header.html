@@ -13,15 +13,6 @@
         >{{ config.brand.name }}<span class="brand-sub">{{ config.brand.subName }}</span></span
       >
     </a>
-    <button
-      class="menu-toggle"
-      [attr.aria-label]="menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu'"
-      [attr.aria-expanded]="menuOpen()"
-      aria-controls="navLinks"
-      (click)="toggleMenu()"
-    >
-      {{ menuOpen() ? '×' : '☰' }}
-    </button>
     <nav
       id="navLinks"
       class="nav-links"
@@ -34,10 +25,22 @@
           [class.active]="isActive(link.href)"
           [attr.aria-current]="isActive(link.href) ? 'true' : null"
           (click)="closeMenu()"
-          >{{ link.label }}</a
+          >{{ t().nav[link.key] }}</a
         >
       }
     </nav>
-    <a class="btn" href="#contact">Contactez-nous <span aria-hidden="true">↗</span></a>
+    <div class="nav-actions">
+      <app-language-switcher />
+      <a class="btn" href="#contact">{{ t().nav.contactCta }} <span aria-hidden="true">↗</span></a>
+      <button
+        class="menu-toggle"
+        [attr.aria-label]="menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu'"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="navLinks"
+        (click)="toggleMenu()"
+      >
+        {{ menuOpen() ? '×' : '☰' }}
+      </button>
+    </div>
   </div>
 </header>

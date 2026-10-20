@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { I18nService } from '../../i18n/i18n.service';
 import { PlayerVideo } from '../player-video/player-video';
 
 interface Demo {
@@ -25,24 +26,41 @@ const RESPONSIVE_SIZES: { query: string; size: number }[] = [
 })
 export class Demos {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
+  /** Vidéos (non traduisibles) alignées sur l'ordre des démos du dictionnaire. */
+  private readonly videos = [
+    'videos/demo-site-restaurant.mp4',
+    'videos/demo-site-ecommerce.mp4',
+    'videos/demo-site-immobilier.mp4',
+    'videos/demo-site-sante.mp4',
+    'videos/demo-site-voyage.mp4',
+    'videos/demo-site-mode.mp4',
+  ];
+
+  protected readonly demos = computed<Demo[]>(() =>
+    this.t().demos.items.map((item, index) => ({ video: this.videos[index], ...item })),
+  );
 
   /** Démo ouverte dans la modale lecteur. */
   protected readonly activeDemo = signal<Demo | null>(null);
 
-  /** Durées réelles lues depuis les métadonnées vidéo. */
+  /** Durées réelles lues depuis les métadonnées vidéo (indexées par chemin, stable). */
   protected readonly durations = signal<Record<string, string>>({});
 
   /** Cartes par écran + page courante du carrousel. */
   protected readonly pageSize = signal(3);
   protected readonly page = signal(0);
-  protected readonly pageCount = computed(() => Math.ceil(this.demos.length / this.pageSize()));
+  protected readonly pageCount = computed(() => Math.ceil(this.videos.length / this.pageSize()));
 
   /** Démos regroupées par page : toutes rendues côte à côte dans la piste glissante. */
   protected readonly pages = computed(() => {
     const size = this.pageSize();
+    const all = this.demos();
     const groups: Demo[][] = [];
-    for (let i = 0; i < this.demos.length; i += size) {
-      groups.push(this.demos.slice(i, i + size));
+    for (let i = 0; i < all.length; i += size) {
+      groups.push(all.slice(i, i + size));
     }
     return groups;
   });
@@ -57,52 +75,6 @@ export class Demos {
 
   /** Vidéos démarrées par le survol : relâchées à la sortie de la souris. */
   private readonly hoverStarted = new WeakSet<HTMLVideoElement>();
-
-  protected readonly demos: Demo[] = [
-    {
-      video: 'videos/demo-site-restaurant.mp4',
-      ariaLabel: 'Démonstration du site web de restaurant',
-      tag: 'Restauration',
-      title: 'Site web de restaurant',
-      description: 'Présentation du restaurant, mise en valeur du menu et parcours de réservation.',
-    },
-    {
-      video: 'videos/demo-site-ecommerce.mp4',
-      ariaLabel: 'Démonstration du site e-commerce',
-      tag: 'Commerce en ligne',
-      title: 'Site e-commerce',
-      description:
-        "Présentation des produits, catégories et parcours d'achat d'une boutique en ligne.",
-    },
-    {
-      video: 'videos/demo-site-immobilier.mp4',
-      ariaLabel: "Démonstration d'un site immobilier",
-      tag: 'Immobilier',
-      title: 'Site web immobilier',
-      description: 'Vitrine de biens, fiches de propriétés et expérience de recherche simplifiée.',
-    },
-    {
-      video: 'videos/demo-site-sante.mp4',
-      ariaLabel: "Démonstration d'un site de cabinet médical",
-      tag: 'Santé',
-      title: 'Site cabinet médical',
-      description: "Présentation de l'équipe, spécialités et prise de rendez-vous en ligne.",
-    },
-    {
-      video: 'videos/demo-site-voyage.mp4',
-      ariaLabel: "Démonstration d'un site d'agence de voyage",
-      tag: 'Voyage',
-      title: 'Site agence de voyage',
-      description: 'Offres de séjours, destinations phares et réservation d’itinéraires.',
-    },
-    {
-      video: 'videos/demo-site-mode.mp4',
-      ariaLabel: "Démonstration d'une boutique de mode",
-      tag: 'Mode',
-      title: 'Site de marque mode',
-      description: 'Collections saisonnières, lookbooks et expérience mobile-first.',
-    },
-  ];
 
   constructor() {
     if (!isPlatformBrowser(this.platformId)) {
@@ -146,7 +118,7 @@ export class Demos {
     const seconds = Math.round(video.duration % 60);
     const label = `${minutes}:${String(seconds).padStart(2, '0')}`;
 
-    this.durations.update((current) => ({ ...current, [demo.title]: label }));
+    this.durations.update((current) => ({ ...current, [demo.video]: label }));
   }
 
   /** Lecture muette au survol : désactivée sur tactile et en mouvement réduit. */
@@ -181,7 +153,7 @@ export class Demos {
 
     this.pageSize.set(size);
     this.page.update((current) =>
-      Math.min(current, Math.max(0, Math.ceil(this.demos.length / size) - 1)),
+      Math.min(current, Math.max(0, Math.ceil(this.videos.length / size) - 1)),
     );
   }
 

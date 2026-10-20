@@ -1,13 +1,6 @@
 import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-
-interface Project {
-  image: string;
-  alt: string;
-  tag: string;
-  title: string;
-  description: string;
-}
+import { I18nService } from '../../i18n/i18n.service';
 
 /** Nombre de cartes visibles selon la largeur d'écran. */
 const RESPONSIVE_SIZES: { query: string; size: number }[] = [
@@ -22,45 +15,35 @@ const RESPONSIVE_SIZES: { query: string; size: number }[] = [
 })
 export class Portfolio {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
 
-  protected readonly projects: Project[] = [
-    {
-      image:
-        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80',
-      alt: 'Ambiance de restaurant',
-      tag: 'Développement web',
-      title: 'Site vitrine — Restaurant',
-      description: 'Un site élégant pour présenter un établissement, son menu et ses coordonnées.',
-    },
-    {
-      image:
-        'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=80',
-      alt: 'Design graphique et supports de communication',
-      tag: 'Marketing digital',
-      title: 'Campagne pour les réseaux sociaux',
-      description: "Une direction visuelle cohérente pour renforcer la présence d'une marque.",
-    },
-    {
-      image:
-        'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80',
-      alt: 'Équipement de production vidéo',
-      tag: 'Production vidéo',
-      title: 'Vidéo promotionnelle',
-      description: 'Un format vidéo dynamique conçu pour présenter un produit ou un service.',
-    },
+  /** Images (non traduisibles) alignées sur l'ordre des réalisations du dictionnaire. */
+  private readonly images = [
+    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80',
+    'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=80',
+    'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80',
   ];
+
+  protected readonly projects = computed(() =>
+    this.t().portfolio.projects.map((project, index) => ({
+      image: this.images[index],
+      ...project,
+    })),
+  );
 
   /** Cartes par écran + page courante du carrousel. */
   protected readonly pageSize = signal(3);
   protected readonly page = signal(0);
-  protected readonly pageCount = computed(() => Math.ceil(this.projects.length / this.pageSize()));
+  protected readonly pageCount = computed(() => Math.ceil(this.images.length / this.pageSize()));
 
   /** Réalisations regroupées par page : toutes rendues côte à côte dans la piste glissante. */
   protected readonly pages = computed(() => {
     const size = this.pageSize();
-    const groups: Project[][] = [];
-    for (let i = 0; i < this.projects.length; i += size) {
-      groups.push(this.projects.slice(i, i + size));
+    const all = this.projects();
+    const groups: (typeof all)[] = [];
+    for (let i = 0; i < all.length; i += size) {
+      groups.push(all.slice(i, i + size));
     }
     return groups;
   });
@@ -101,7 +84,7 @@ export class Portfolio {
 
     this.pageSize.set(size);
     this.page.update((current) =>
-      Math.min(current, Math.max(0, Math.ceil(this.projects.length / size) - 1)),
+      Math.min(current, Math.max(0, Math.ceil(this.images.length / size) - 1)),
     );
   }
 }

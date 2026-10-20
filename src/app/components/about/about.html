@@ -4,10 +4,10 @@
       <div
         class="about-photo"
         role="img"
-        [attr.aria-label]="'Espace de travail créatif et numérique de ' + config.brand.fullName"
+        [attr.aria-label]="config.brand.fullName"
         [style.background-image]="'url(' + workspaceImage + ')'"
       >
-        <span class="about-photo-tag">Votre partenaire digital</span>
+        <span class="about-photo-tag">{{ t().about.photoTag }}</span>
       </div>
 
       <div class="about-stamp">
@@ -16,27 +16,20 @@
         </div>
         <div class="about-stamp-copy">
           <strong>{{ config.brand.fullName }}</strong>
-          <span>{{ config.brand.tagline }}</span>
+          <span>{{ t().about.tagline }}</span>
         </div>
       </div>
     </div>
 
     <div class="about-copy">
       <div class="section-head">
-        <p class="eyebrow">À propos de nous</p>
-        <h2>Une agence digitale proche de vos ambitions</h2>
-        <p>
-          <strong>{{ config.brand.fullName }}</strong> est une agence digitale en lancement, pensée
-          pour accompagner les entreprises dans la création de solutions web et leur communication
-          digitale.
-        </p>
+        <p class="eyebrow">{{ t().about.eyebrow }}</p>
+        <h2>{{ t().about.title }}</h2>
+        <p><strong>{{ config.brand.fullName }}</strong> {{ t().about.intro }}</p>
       </div>
-      <p>
-        Notre approche associe expertise technique, créativité et accompagnement personnalisé pour
-        vous aider à construire une présence en ligne cohérente et durable.
-      </p>
+      <p>{{ t().about.approach }}</p>
       <div class="values">
-        @for (value of values; track value.title) {
+        @for (value of values(); track value.title) {
           <div class="value">
             <b aria-hidden="true">{{ value.icon }}</b>
             <div>

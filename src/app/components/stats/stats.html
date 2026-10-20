@@ -2,12 +2,12 @@
 <section class="stats" aria-labelledby="stats-title">
   <div class="container">
     <div class="stats-head">
-      <p class="eyebrow">Nos engagements</p>
-      <h2 id="stats-title">Une collaboration pensée pour vous</h2>
+      <p class="eyebrow">{{ t().stats.eyebrow }}</p>
+      <h2 id="stats-title">{{ t().stats.title }}</h2>
     </div>
 
     <ul class="stats-grid">
-      @for (stat of stats; track stat.value) {
+      @for (stat of stats(); track stat.key) {
         <li class="stat">
           <span class="stat-icon" aria-hidden="true">
             @switch (stat.key) {

@@ -9,6 +9,7 @@ import {
   output,
   viewChild,
 } from '@angular/core';
+import { I18nService } from '../../i18n/i18n.service';
 
 /**
  * Lecteur vidéo plein écran (modale).
@@ -35,6 +36,8 @@ export class PlayerVideo implements OnDestroy {
 
   private readonly document = inject(DOCUMENT);
   private readonly hostRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
 
   private readonly closeButton = viewChild.required<ElementRef<HTMLButtonElement>>('closeButton');
   private readonly videoEl = viewChild.required<ElementRef<HTMLVideoElement>>('videoPlayer');

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SITE_CONFIG } from '../../site.config';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-hero',
@@ -8,11 +9,7 @@ import { SITE_CONFIG } from '../../site.config';
 })
 export class Hero {
   protected readonly config = SITE_CONFIG;
-  protected readonly domains = [
-    'Sites web',
-    'Marketing digital',
-    'Montage vidéo',
-    'Design & branding',
-    'Solutions sur mesure',
-  ];
+
+  private readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
 }

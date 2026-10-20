@@ -212,6 +212,35 @@ h2 {
   }
 }
 
+/* --- Arabe (RTL) --- */
+[dir='rtl'] {
+  /* Barre de nav : on garde le logo à gauche et les actions à droite (pas d'inversion). */
+  .nav {
+    direction: ltr;
+  }
+
+  /*
+   * Les carrousels gardent une piste en LTR pour que le glissement translateX
+   * et l'ordre des pages restent corrects ; seul le contenu des cartes repasse
+   * en RTL pour un texte aligné à droite.
+   */
+  .demo-track,
+  .portfolio-track {
+    direction: ltr;
+  }
+
+  .demo-grid,
+  .portfolio-grid {
+    direction: rtl;
+  }
+
+  /* Flèches inline des boutons : miroir pour pointer dans le sens de lecture. */
+  .btn > span[aria-hidden='true'] {
+    display: inline-block;
+    transform: scaleX(-1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

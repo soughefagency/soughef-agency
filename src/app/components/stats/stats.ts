@@ -1,11 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { I18nService } from '../../i18n/i18n.service';
 
-interface Stat {
-  /** Clé de l'icône SVG rendue dans le template. */
-  key: 'tailored' | 'services' | 'support' | 'global';
-  value: string;
-  label: string;
-}
+type IconKey = 'tailored' | 'services' | 'support' | 'global';
 
 @Component({
   selector: 'app-stats',
@@ -13,10 +9,13 @@ interface Stat {
   styleUrl: './stats.scss',
 })
 export class Stats {
-  protected readonly stats: Stat[] = [
-    { key: 'tailored', value: 'Sur mesure', label: 'Selon vos objectifs' },
-    { key: 'services', value: 'Multi-services', label: 'Un seul interlocuteur' },
-    { key: 'support', value: 'À vos côtés', label: 'Du brief à la livraison' },
-    { key: 'global', value: 'International', label: 'Tunisie, France et ailleurs' },
-  ];
+  private readonly i18n = inject(I18nService);
+  protected readonly t = this.i18n.t;
+
+  /** Clés d'icônes (non traduisibles) alignées sur l'ordre des engagements. */
+  private readonly keys: IconKey[] = ['tailored', 'services', 'support', 'global'];
+
+  protected readonly stats = computed(() =>
+    this.t().stats.items.map((item, index) => ({ key: this.keys[index], ...item })),
+  );
 }

@@ -1,15 +1,13 @@
 import { DOCUMENT } from '@angular/common';
-import {
-  Component,
-  OnDestroy,
-  afterNextRender,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, OnDestroy, afterNextRender, inject, signal } from '@angular/core';
 import { SITE_CONFIG } from '../../site.config';
+import { I18nService } from '../../i18n/i18n.service';
+import { Dict } from '../../i18n/translations';
+import { LanguageSwitcher } from '../language-switcher/language-switcher';
 
 @Component({
   selector: 'app-site-header',
+  imports: [LanguageSwitcher],
   templateUrl: './site-header.html',
   styleUrl: './site-header.scss',
 })
@@ -17,6 +15,10 @@ export class SiteHeader implements OnDestroy {
   protected readonly config = SITE_CONFIG;
 
   private readonly document = inject(DOCUMENT);
+  private readonly i18n = inject(I18nService);
+
+  /** Dictionnaire courant (réactif) — à lire dans le template : `t().nav.home`. */
+  protected readonly t = this.i18n.t;
 
   protected readonly menuOpen = signal(false);
 
@@ -26,15 +28,14 @@ export class SiteHeader implements OnDestroy {
   private observer?: IntersectionObserver;
 
   // Ordre aligné sur l'ordre des sections dans la page (home.html).
-  protected readonly links = [
-    { href: '#accueil', label: 'Accueil' },
-    { href: '#services', label: 'Services' },
-    { href: '#apropos', label: 'À propos' },
-    { href: '#portfolio', label: 'Portfolio' },
-    { href: '#demos', label: 'Démos de sites web' },
+  protected readonly links: { href: string; key: keyof Dict['nav'] }[] = [
+    { href: '#accueil', key: 'home' },
+    { href: '#services', key: 'services' },
+    { href: '#apropos', key: 'about' },
+    { href: '#portfolio', key: 'portfolio' },
+    { href: '#demos', key: 'demos' },
     // Témoignages : à réactiver plus tard
-    // { href: '#temoignages', label: 'Témoignages' },
-    { href: '#contact', label: 'Contact' },
+    { href: '#contact', key: 'contact' },
   ];
 
   constructor() {

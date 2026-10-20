@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { SITE_CONFIG } from '../../site.config';
 import { ContactMessage, ContactService, ContactStatus } from '../../services/contact.service';
+import { I18nService } from '../../i18n/i18n.service';
 import { SocialLinks } from '../social-links/social-links';
 
 type RequiredField = 'name' | 'email' | 'message';
@@ -30,32 +31,18 @@ export class Contact {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly contactService = inject(ContactService);
+  private readonly i18n = inject(I18nService);
 
   protected readonly config = SITE_CONFIG;
+  protected readonly t = this.i18n.t;
 
-  protected readonly serviceOptions = [
-    'Création de site web',
-    'Marketing digital',
-    'Montage vidéo',
-    'Design & branding',
-    'Maintenance & support',
-    'Autre demande',
-  ];
-
-  protected readonly budgetOptions = [
-    'À définir',
-    'Moins de 1 000 DT',
-    '1 000–3 000 DT',
-    '3 000–6 000 DT',
-    'Plus de 6 000 DT',
-    'Budget en euros à définir',
-  ];
-
+  // Les selects stockent l'INDEX de l'option (chaîne) : robuste au changement de
+  // langue (la sélection reste valide, seuls les libellés affichés changent).
   protected readonly form = this.fb.group({
     name: ['', notBlank],
     email: ['', [notBlank, Validators.email]],
-    service: ['Création de site web'],
-    budget: ['À définir'],
+    service: ['0'],
+    budget: ['0'],
     message: ['', [notBlank, Validators.minLength(10)]],
   });
 
@@ -65,13 +52,15 @@ export class Contact {
   protected readonly status = signal<'idle' | ContactStatus>('idle');
 
   protected readonly note = computed(() => {
+    const notes = this.t().contact.notes;
+    const email = this.config.email;
     switch (this.status()) {
       case 'draft-opened':
-        return `Votre demande est prête dans votre application e-mail. Si elle ne s'ouvre pas, écrivez-nous à ${this.config.email}.`;
+        return notes.draftOpened.replace('{email}', email);
       case 'error':
-        return `L'ouverture de votre messagerie a échoué. Écrivez-nous directement à ${this.config.email}.`;
+        return notes.error.replace('{email}', email);
       default:
-        return "Aucune donnée n'est transmise à un serveur : votre demande s'ouvre dans votre application e-mail.";
+        return notes.idle;
     }
   });
 
@@ -87,7 +76,8 @@ export class Contact {
     this.status.set('idle');
 
     const message = this.normalizedMessage();
-    this.form.patchValue(message);
+    // Reflète les champs texte nettoyés (sans toucher aux selects stockés par index).
+    this.form.patchValue({ name: message.name, email: message.email, message: message.message });
 
     this.status.set(await this.contactService.send(message));
     this.sending.set(false);
@@ -105,28 +95,30 @@ export class Contact {
     }
 
     const control = this.form.controls[field];
+    const errors = this.t().contact.errors;
 
     if (control.hasError('notBlank')) {
-      return field === 'message' ? 'Merci de décrire votre projet.' : 'Ce champ est obligatoire.';
+      return field === 'message' ? errors.messageRequired : errors.required;
     }
     if (control.hasError('email')) {
-      return 'Adresse e-mail invalide (exemple : vous@exemple.com).';
+      return errors.email;
     }
     if (control.hasError('minlength')) {
-      return 'Encore quelques mots pour bien cerner votre besoin.';
+      return errors.minlength;
     }
 
-    return 'Ce champ est invalide.';
+    return errors.invalid;
   }
 
   private normalizedMessage(): ContactMessage {
     const value = this.form.getRawValue();
+    const dict = this.t().contact;
 
     return {
       name: value.name.trim(),
       email: value.email.trim(),
-      service: value.service,
-      budget: value.budget,
+      service: dict.serviceOptions[Number(value.service)] ?? dict.serviceOptions[0],
+      budget: dict.budgetOptions[Number(value.budget)] ?? dict.budgetOptions[0],
       message: value.message.trim(),
     };
   }

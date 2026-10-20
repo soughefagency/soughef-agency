@@ -18,7 +18,7 @@
         class="player-close"
         #closeButton
         (click)="close()"
-        aria-label="Fermer la vidéo"
+        [attr.aria-label]="t().player.close"
       >
         <span aria-hidden="true">✕</span>
       </button>

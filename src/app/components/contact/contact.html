@@ -2,17 +2,14 @@
   <div class="container contact-grid">
     <div>
       <div class="section-head">
-        <p class="eyebrow">Contact</p>
-        <h2>Parlons de votre projet</h2>
-        <p>
-          Vous avez une idée ? Nous pouvons vous aider à la concrétiser. Présentez-nous votre besoin
-          et nous reviendrons vers vous.
-        </p>
+        <p class="eyebrow">{{ t().contact.eyebrow }}</p>
+        <h2>{{ t().contact.title }}</h2>
+        <p>{{ t().contact.lead }}</p>
       </div>
       <div class="contact-details">
         <span><b aria-hidden="true">✉</b> {{ config.email }}</span>
-        <span><b aria-hidden="true">⌖</b> Tunisie · France · International</span>
-        <span><b aria-hidden="true">◷</b> Sur rendez-vous</span>
+        <span><b aria-hidden="true">⌖</b> {{ t().contact.location }}</span>
+        <span><b aria-hidden="true">◷</b> {{ t().contact.availability }}</span>
       </div>
       <div class="contact-socials">
         <app-social-links [size]="48" />
@@ -20,12 +17,12 @@
     </div>
     <form class="contact-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <div class="field" [class.is-invalid]="showError('name')">
-        <label for="name">Nom complet *</label>
+        <label for="name">{{ t().contact.nameLabel }}</label>
         <input
           id="name"
           formControlName="name"
           autocomplete="name"
-          placeholder="Votre nom"
+          [placeholder]="t().contact.namePlaceholder"
           required
           [attr.aria-invalid]="showError('name')"
           [attr.aria-describedby]="showError('name') ? 'name-error' : null"
@@ -35,13 +32,13 @@
         }
       </div>
       <div class="field" [class.is-invalid]="showError('email')">
-        <label for="email">Adresse e-mail *</label>
+        <label for="email">{{ t().contact.emailLabel }}</label>
         <input
           id="email"
           formControlName="email"
           type="email"
           autocomplete="email"
-          placeholder="vous@exemple.com"
+          [placeholder]="t().contact.emailPlaceholder"
           required
           [attr.aria-invalid]="showError('email')"
           [attr.aria-describedby]="showError('email') ? 'email-error' : null"
@@ -51,27 +48,27 @@
         }
       </div>
       <div class="field">
-        <label for="service">Service souhaité</label>
+        <label for="service">{{ t().contact.serviceLabel }}</label>
         <select id="service" formControlName="service">
-          @for (option of serviceOptions; track option) {
-            <option [value]="option">{{ option }}</option>
+          @for (option of t().contact.serviceOptions; track $index) {
+            <option [value]="$index">{{ option }}</option>
           }
         </select>
       </div>
       <div class="field">
-        <label for="budget">Budget estimé</label>
+        <label for="budget">{{ t().contact.budgetLabel }}</label>
         <select id="budget" formControlName="budget">
-          @for (option of budgetOptions; track option) {
-            <option [value]="option">{{ option }}</option>
+          @for (option of t().contact.budgetOptions; track $index) {
+            <option [value]="$index">{{ option }}</option>
           }
         </select>
       </div>
       <div class="field full" [class.is-invalid]="showError('message')">
-        <label for="message">Parlez-nous de votre projet *</label>
+        <label for="message">{{ t().contact.messageLabel }}</label>
         <textarea
           id="message"
           formControlName="message"
-          placeholder="Votre besoin, vos objectifs, vos délais…"
+          [placeholder]="t().contact.messagePlaceholder"
           required
           [attr.aria-invalid]="showError('message')"
           [attr.aria-describedby]="showError('message') ? 'message-error' : null"
@@ -82,9 +79,9 @@
       </div>
       <button class="btn full" type="submit" [disabled]="sending()" [attr.aria-busy]="sending()">
         @if (sending()) {
-          Préparation…
+          {{ t().contact.sending }}
         } @else {
-          Préparer mon message <span aria-hidden="true">→</span>
+          {{ t().contact.submit }} <span aria-hidden="true">→</span>
         }
       </button>
       <p

@@ -4,7 +4,7 @@
       <a
         class="brand"
         href="#accueil"
-        [attr.aria-label]="config.brand.fullName + ', retour en haut'"
+        [attr.aria-label]="config.brand.fullName + ' — ' + t().footer.backToTop"
       >
         <span class="brand-mark" aria-hidden="true">
           <img [src]="config.logos.mark" alt="" />
@@ -13,15 +13,15 @@
           >{{ config.brand.name }}<span class="brand-sub">{{ config.brand.subName }}</span></span
         >
       </a>
-      <nav class="footer-links" aria-label="Navigation de pied de page">
+      <nav class="footer-links" aria-label="Navigation">
         @for (link of links; track link.href) {
-          <a [href]="link.href">{{ link.label }}</a>
+          <a [href]="link.href">{{ t().nav[link.key] }}</a>
         }
       </nav>
       <app-social-links [size]="44" />
     </div>
     <div class="copyright">
-      <span>© {{ year() }} {{ config.brand.fullName }}. Tous droits réservés.</span>
+      <span>© {{ year() }} {{ config.brand.fullName }}. {{ t().footer.rights }}</span>
     </div>
   </div>
 </footer>

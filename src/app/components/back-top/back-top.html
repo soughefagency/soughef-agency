@@ -1,8 +1,8 @@
 <button
   class="back-top"
   type="button"
-  aria-label="Retour en haut"
-  title="Retour en haut"
+  [attr.aria-label]="t().footer.backToTop"
+  [attr.title]="t().footer.backToTop"
   (click)="scrollTop()"
 >
   ↑

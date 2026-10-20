@@ -1,21 +1,21 @@
 <section class="hero" id="accueil">
   <div class="container">
     <div class="hero-content">
-      <p class="eyebrow">Agence digitale</p>
+      <p class="eyebrow">{{ t().hero.eyebrow }}</p>
       <h1>
         {{ config.brand.name }} <span>{{ config.brand.subName }}</span>
       </h1>
       <p class="hero-lead">
-        Des solutions digitales sur mesure pour propulser votre entreprise vers le succès.
+        {{ t().hero.lead }}
       </p>
-      <div class="service-line" aria-label="Nos domaines d'expertise">
-        @for (domain of domains; track domain) {
+      <div class="service-line" [attr.aria-label]="t().hero.eyebrow">
+        @for (domain of t().hero.domains; track domain) {
           <span>{{ domain }}</span>
         }
       </div>
       <div class="hero-actions">
-        <a class="btn" href="#services">Découvrir nos services <span aria-hidden="true">→</span></a>
-        <a class="btn btn-outline" href="#contact">Discutons de votre projet</a>
+        <a class="btn" href="#services">{{ t().hero.ctaPrimary }} <span aria-hidden="true">→</span></a>
+        <a class="btn btn-outline" href="#contact">{{ t().hero.ctaSecondary }}</a>
       </div>
     </div>
   </div>

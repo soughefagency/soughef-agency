@@ -1,0 +1,35 @@
+<div class="lang-switch">
+  <button
+    class="lang-trigger"
+    type="button"
+    (click)="toggle()"
+    [attr.aria-expanded]="open()"
+    aria-haspopup="listbox"
+    aria-label="Langue / Language"
+  >
+    <app-flag-icon [code]="i18n.lang()" />
+    <span class="lang-current">{{ i18n.t().langNames[i18n.lang()] }}</span>
+    <svg class="lang-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  </button>
+
+  @if (open()) {
+    <ul class="lang-menu" role="listbox">
+      @for (option of i18n.langs; track option.code) {
+        <li role="option" [attr.aria-selected]="option.code === i18n.lang()">
+          <button
+            type="button"
+            class="lang-option"
+            [class.is-active]="option.code === i18n.lang()"
+            (click)="choose(option.code)"
+          >
+            <app-flag-icon [code]="option.code" />
+            <span>{{ i18n.t().langNames[option.code] }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>
