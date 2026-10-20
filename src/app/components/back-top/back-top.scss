@@ -16,3 +16,8 @@
   font-size: 20px;
   line-height: 1;
 }
+
+:host-context([dir='rtl']) .back-top {
+  right: auto;
+  left: 20px;
+}

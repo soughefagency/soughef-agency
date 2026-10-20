@@ -57,24 +57,11 @@
   cursor: pointer;
 }
 
+/* Dès 980px, les libellés (plus longs selon la langue) ne tiennent plus en ligne :
+   on bascule vers le menu burger et on masque le bouton Contact. */
 @media (max-width: 980px) {
-  .nav-links {
-    gap: 14px;
-  }
-
   .nav-actions .btn {
     display: none;
-  }
-}
-
-@media (max-width: 720px) {
-  .nav {
-    min-height: 69px;
-  }
-
-  .brand-mark {
-    width: 44px;
-    height: 44px;
   }
 
   .menu-toggle {
@@ -85,7 +72,7 @@
   .nav-links {
     display: none;
     position: absolute;
-    top: 68px;
+    top: 100%;
     left: 0;
     right: 0;
     padding: 16px 22px 22px;
@@ -103,5 +90,16 @@
     &.open {
       display: flex;
     }
+  }
+}
+
+@media (max-width: 720px) {
+  .nav {
+    min-height: 69px;
+  }
+
+  .brand-mark {
+    width: 44px;
+    height: 44px;
   }
 }

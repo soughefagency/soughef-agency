@@ -48,6 +48,16 @@ body {
   color: var(--ink);
   background: #fff;
   line-height: 1.6;
+  /* Filet de sécurité : aucun débordement horizontal, quelle que soit la langue.
+     `clip` ne crée pas de conteneur de défilement → le header sticky reste intact. */
+  overflow-x: clip;
+}
+
+/* Les titres longs (variables selon la langue) se coupent au lieu de déborder. */
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
 }
 
 a {
@@ -219,6 +229,11 @@ h2 {
     direction: ltr;
   }
 
+  /* Menu mobile : texte des liens aligné à droite (lisible en arabe). */
+  .nav-links {
+    text-align: right;
+  }
+
   /*
    * Les carrousels gardent une piste en LTR pour que le glissement translateX
    * et l'ordre des pages restent corrects ; seul le contenu des cartes repasse
@@ -238,6 +253,12 @@ h2 {
   .btn > span[aria-hidden='true'] {
     display: inline-block;
     transform: scaleX(-1);
+  }
+
+  /* Barres d'accent des cartes : partent du côté droit. */
+  .service-card::before,
+  .stat::before {
+    transform-origin: right;
   }
 }
 
